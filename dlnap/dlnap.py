@@ -37,10 +37,12 @@ from contextlib import contextmanager
 import os
 py3 = sys.version_info[0] == 3
 if py3:
+   from urllib import unquote
    from urllib.request import urlopen
    from http.server import HTTPServer
    from http.server import BaseHTTPRequestHandler
 else:
+   from urllib import unqoute
    from urllib2 import urlopen
    from BaseHTTPServer import BaseHTTPRequestHandler
    from BaseHTTPServer import HTTPServer
@@ -252,6 +254,7 @@ class DownloadProxy(BaseHTTPRequestHandler):
    def do_GET(self):
       global running
       url = self.path[1:] # replace '/'
+      url = unquote(url)
 
       content_type = ''
       if os.path.exists(url):
